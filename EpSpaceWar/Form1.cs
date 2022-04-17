@@ -26,7 +26,7 @@ namespace EpShootingGame
             panelHeight = panel1.Height;
             scrollY = -panelHeight;
             myBulletSpeed = 20f;
-            playerHp = 5;
+            playerHp = 3;
             enemyHp = 3;
             bossHp = 10000;
 
@@ -128,7 +128,7 @@ namespace EpShootingGame
                     foreach (var enemy in enemies) enemy.Draw(e.Graphics);
                     foreach (var fixEnemy in fixEnemies) fixEnemy.Draw(e.Graphics);
                 }
-                e.Graphics.DrawString("점수 : " + (score + hitCount * 100) + "\n생명 : " + (score / 200 + player.Life) + "\n처치 : " + killCount + "\n피격 : " + hitCount + "\n총알 : " + bullets.Count, font, Brushes.White, 730, 40);
+                e.Graphics.DrawString("점수 : " + (score + hitCount * 100) + "\n생명 : " + player.Life + "\n처치 : " + killCount + "\n피격 : " + hitCount + "\n총알 : " + bullets.Count, font, Brushes.White, 730, 40);
                 e.Graphics.DrawString("Time : " + timer + "\nLevel : " + (level + 1), DefaultFont, Brushes.Yellow, 600, 20);
                 if (gameOver)
                 {
@@ -147,8 +147,8 @@ namespace EpShootingGame
             else
             {
                 e.Graphics.DrawImage(mainBack, -imageSize, -imageSize, 1000 + imageSize, 700 + imageSize);
-                e.Graphics.DrawImage(buttonStart, panelWidth / 2 - buttonStart.Width / 4, 380, 150, 50);
-                e.Graphics.DrawImage(buttonExit, panelWidth / 2 - buttonStart.Width / 4, 480, 150, 50);
+                e.Graphics.DrawImage(buttonStart, startButton);
+                e.Graphics.DrawImage(buttonExit, exitButton);
             }
         }
 
@@ -261,11 +261,9 @@ namespace EpShootingGame
 
         private void eMouseDown(object sender, MouseEventArgs e)
         {
-            if (e.X > panelWidth / 2 - buttonStart.Width / 4 && e.X < panelWidth / 2 + buttonStart.Width / 4 && e.Y > 380 && e.Y < 380 + buttonStart.Height / 2)
-
+            //if (e.X > panelWidth / 2 - buttonStart.Width / 4 && e.X < panelWidth / 2 + buttonStart.Width / 4 && e.Y > 380 && e.Y < 380 + buttonStart.Height / 2)
+            if(startButton.Contains(e.X, e.Y))
             { // e.Clicks.Equals(panelWidth / 2 - buttonStart.Width / 2, 380){
-
-               
 
                 MessageBox.Show("게임 시작");
                 mainSound.Stop();
@@ -274,18 +272,11 @@ namespace EpShootingGame
                 Invalidate();
 
             }
-
-            if (e.X > panelWidth / 2 - buttonExit.Width / 4 && e.X < panelWidth / 2 + buttonExit.Width / 4 && e.Y > 480 && e.Y < 480 + buttonStart.Height / 2)
-
+            if(exitButton.Contains(e.X, e.Y))
             { 
-
-
-
                 MessageBox.Show("게임 종료");
 
-
                 Application.Exit();
-                
             }
         }
 

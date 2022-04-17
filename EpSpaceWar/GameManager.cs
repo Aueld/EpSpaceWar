@@ -36,6 +36,8 @@ namespace EpShootingGame
         protected static Bitmap GUI;
         protected static Bitmap boom;
 
+        protected static Rectangle startButton;
+        protected static Rectangle exitButton;
 
         protected static Font font;
 
@@ -78,7 +80,9 @@ namespace EpShootingGame
         protected static EpBullet b;
         protected static EpEnemy enemy;
         protected static EpEnemy fixEnemy;
+
         private static Bitmap ShipBMP;
+
         static GameManager() // new 다 여기로 뺼것
         {
             enemyImg = Properties.Resources.Enemy;
@@ -88,6 +92,7 @@ namespace EpShootingGame
             fixEnemies = new List<EpEnemy>();
             bullets = new List<EpBullet>();
             shot = new List<Shot>();
+
             stageSound1 = new SoundPlayer(Properties.Resources.Dube);
             stageSound2 = new SoundPlayer(Properties.Resources.rain);
             mainSound = new SoundPlayer(Properties.Resources.menu);
@@ -98,7 +103,11 @@ namespace EpShootingGame
             mainBack = Properties.Resources.spaceMainBack;
             GUI = Properties.Resources.GUI;
             boom = Properties.Resources.boom;
+
             font = new System.Drawing.Font("맑은 고딕", 18);
+
+            startButton = new Rectangle(1000 / 2 - buttonStart.Width / 4, 380, 150, 50);
+            exitButton = new Rectangle(1000 / 2 - buttonStart.Width / 4, 480, 150, 50);
         }
 
         protected override CreateParams CreateParams
@@ -139,6 +148,20 @@ namespace EpShootingGame
             this.ResumeLayout(false);
 
         }
+
+        protected void ScoreLifePlus(int s)
+        {
+            if (score > s)
+            {
+                score -= s;
+
+                if (player.Life < 3)
+                    player.Life++;
+                else
+                    score += s;
+            }
+        }
+
         protected void EnemySpawn()
         {
             for (int i = 0; i < bullets.Count; i++)// var bullet in bullets)
@@ -167,18 +190,14 @@ namespace EpShootingGame
                 {
                     case EpBullet.Sides.Enemy:
                         {
-
                             if (bullets[i].IsHit(player))
                             {
                                 hitCount++;
-                                score -= 100;
                                 bullets.RemoveAt(i);
                                 b = null;
-                                if (score < 0)
-                                {
-                                    score = 0;
-                                    player.Life--;
-                                }
+                                
+                                player.Life--;
+                                
                                 break;
                                 //Close();
                             }
@@ -206,12 +225,79 @@ namespace EpShootingGame
                             //enemyDie.Play();
                             enemy.Die();
                             score += 10;
+
+                            ScoreLifePlus(400);
+
                             killCount++;
                         }
                     }
                 }
             }
-			
+            
+            {
+                //foreach (var bullet in bullets)
+                //{
+                //    //item.zanzou(this, g);
+                //    //bullet.move(new Point(width / 2, height / 2));
+                //    bullet.Move();
+                //    bullet.Draw(g);
+                //    int bx = (int)bullet.X + 1;
+                //    int by = (int)bullet.Y + 1;
+                //    if ((bx >= 0) && (bx < panelWidth) && (by >= 0) && (by < panelHeight))
+                //    {
+                //        bmp.SetPixel(bx, by, Color.White);
+                //    }
+                //    //try
+                //    //{
+                //    //    bmp.SetPixel((int)(bullet.X), (int)(bullet.Y), Color.White);
+                //    //}
+                //    //catch (Exception)
+                //    //{
+                //    //    throw;
+                //    //}
+                //    // 피격시 설정
+                //    switch (bullet.Side)
+                //    {
+                //        case EpBullet.Sides.Enemy:
+                //            {
+                //                if (bullet.IsHit(player))
+                //                {
+                //                    hitCount++;
+                //                    score -= 100;
+                //                    bullets.RemoveAt(bullets.IndexOf(bullet));
+                //                    if (score < 0)
+                //                    {
+                //                        score = 0;
+                //                        player.Life--;
+                //                    }
+                //                    break;
+                //                    //Close();
+                //                }
+                //            }
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //    foreach (var enemy in enemies)
+                //    {
+                //        for (int i = 0; i < shot.Count; i++)// shoter in shot)
+                //        {
+                //            if (shot[i].IsHit(enemy))
+                //            {
+                //                score += 1;
+                //                enemy.hp--;
+                //                shot.RemoveAt(i);
+                //                if (enemy.hp < 0)
+                //                {
+                //                    enemy.Die();
+                //                    score += 10;
+                //                    killCount++;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+            }
             // 랜덤 적 생성 및 설정
             if (random.Next(200) < 1 + (killCount / 40) + level * 10)
             {
@@ -971,6 +1057,8 @@ namespace EpShootingGame
 
             for (int i = 0; i < bullets.Count; i++)// var bullet in bullets)
             {
+                //item.zanzou(this, g);
+                //bullet.move(new Point(width / 2, height / 2));
                 bullets[i].Move();
                 bullets[i].Draw(g);
                 int bx = (int)bullets[i].X + 1;
@@ -980,25 +1068,45 @@ namespace EpShootingGame
                     bmp.SetPixel(bx, by, Color.White);
                 }
 
+                //try
+                //{
+                //    bmp.SetPixel((int)(bullet.X), (int)(bullet.Y), Color.White);
+                //}
+                //catch (Exception)
+                //{
+                //    throw;
+                //}
+                // 피격시 설정
                 switch (bullets[i].Side)
                 {
                     case EpBullet.Sides.Enemy:
                         {
-
                             if (bullets[i].IsHit(player))
                             {
                                 hitCount++;
-                                score -= 100;
                                 bullets.RemoveAt(i);
                                 b = null;
-                                if (score < 0)
-                                {
-                                    score = 0;
-                                    player.Life--;
-                                }
+
+                                player.Life--;
+
                                 break;
                                 //Close();
                             }
+                            
+                            //if (bullets[i].IsHit(player))
+                            //{
+                            //    hitCount++;
+                            //    score -= 100;
+                            //    bullets.RemoveAt(i);
+                            //    b = null;
+                            //    if (score < 0)
+                            //    {
+                            //        score = 0;
+                            //        player.Life--;
+                            //    }
+                            //    break;
+                            //    //Close();
+                            //}
                         }
                         break;
 
@@ -1019,6 +1127,7 @@ namespace EpShootingGame
                     {
                         //MessageBox.Show("z");
                         score += 1;
+
                         fixEnemy.hp--;
 
                         shot.RemoveAt(j);
@@ -1028,6 +1137,9 @@ namespace EpShootingGame
                             //enemyDie.Play();
                             fixEnemy.Die();
                             score += 10;
+
+                            ScoreLifePlus(400);
+
                             killCount++;
                         }
                     }
@@ -1068,8 +1180,7 @@ namespace EpShootingGame
             transTimer = 0;
             level = 0;
             onePlay = 0;
-            playerHp = 1;
-
+            playerHp = 3;
 
             enemies = new List<EpEnemy>();
             fixEnemies = new List<EpEnemy>();
@@ -1077,10 +1188,11 @@ namespace EpShootingGame
             bullets = new List<EpBullet>();
             player = new EpPlayer(320.0f, 600.0f, playerHp);
 
-
             gameStart = false;
             gameOver = false;
             check = false;
+            shooting = false;
+            slowShot = false;
 
             Invalidate();
 

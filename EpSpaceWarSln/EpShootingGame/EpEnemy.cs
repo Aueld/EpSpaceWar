@@ -8,7 +8,7 @@ using System.Media;
 
 namespace EpShootingGame
 {
-    public class EpEnemy : Obj
+    public class EpEnemy : EpObject
     {
         protected bool isAlive;
         private Bitmap bmp { get; set; }

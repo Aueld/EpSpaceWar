@@ -7,11 +7,10 @@ using System.Drawing;
 
 namespace EpShootingGame
 {
-
-    public class EpPlayer : EpMover
+    // Player 클래스
+    public class EpPlayer : EpPlayable
     {
-        
-        private static Image image = Properties.Resources.Player;
+        private static Image image = Properties.Resources.Player;   // 이미지 정적 생성. 플레이어는 하나만 존재
         public int width = image.Width;
         public int height = image.Height;
 
@@ -110,7 +109,7 @@ namespace EpShootingGame
 
     }
 
-    public class Shot : EpMover
+    public class Shot : EpPlayable
     {
         private static float PI = 3.1415926535898f;
         private static float PI2 = PI * 2f;

@@ -7,21 +7,25 @@ using System.Drawing;
 
 namespace EpShootingGame
 {
-    public class EpBullet : Obj
+    // Bullet 클래스 :: 오브젝트
+    public class EpBullet : EpObject
     {
+        // 플레이어, 적, 보스
         public enum Sides
         {
             Player, Enemy, Boss,
         }
 
+        // 탄 패턴
         public enum MoveWay
         {
             Concentric, Sighting, Drill,
         }
 
-        private double vx { get; set; }
-        private double vy { get; set; }
-        private double px { get; set; }
+
+        private double vx { get; set; }     // x 방향 탄 속도
+        private double vy { get; set; }     // y 방향 탄 속도
+        private double px { get; set; }     
         private double py { get; set; }
         private double gx { get; set; }
         private double gy { get; set; }

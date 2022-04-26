@@ -25,8 +25,8 @@ namespace EpShootingGame
 
         private double vx { get; set; }     // x 방향 탄 속도
         private double vy { get; set; }     // y 방향 탄 속도
-        private double px { get; set; }     
-        private double py { get; set; }
+        private double px { get; set; }     // 이동하는 x 좌표
+        private double py { get; set; }     // 이동하는 y 좌표
         private double gx { get; set; }
         private double gy { get; set; }
         private double vgx { get; set; }
